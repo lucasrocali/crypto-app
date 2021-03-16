@@ -1,19 +1,15 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Dictionary } from 'src/@types'
+import { Order } from 'src/@types'
 
 type OrderBookProps = {
-  book: Dictionary
+  orders: Order[]
 }
 
-export default function OrderBook({ book }: OrderBookProps) {
-
-  const priceList = Object.keys(book)
-
+function OrderBook({ orders }: OrderBookProps) {
   return (
     <View style={styles.container}>
-      {priceList.map(price => (<Text>{`${price}   ${book[price]}   ${parseFloat(price) * book[price]}`}</Text>))}
-      <Text>{JSON.stringify(book)}</Text>
+      {orders.map(order => (<Text key={`${order.price}`}>{`${order.price}   ${order.size}   ${order.total}`}</Text>))}
     </View>
   );
 };
@@ -23,3 +19,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
+
+export default React.memo(OrderBook)

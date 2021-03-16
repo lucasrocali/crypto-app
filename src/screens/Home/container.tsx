@@ -1,19 +1,19 @@
 import React from 'react'
 import { StyleSheet, Text, SafeAreaView, ScrollView } from 'react-native'
-import { ConnectionStatus, Dictionary } from 'src/@types'
+import { ConnectionStatus, Order } from 'src/@types'
 import OrderBook from 'src/components/OrderBook'
 
 type HomeContainerProps = {
   connectionStatus: ConnectionStatus
-  bidsObj: Dictionary
+  topBids: Order[]
 }
-export default function HomeContainer({ bidsObj }: HomeContainerProps) {
+export default function HomeContainer({ topBids }: HomeContainerProps) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <Text>Bids</Text>
         <OrderBook
-          book={bidsObj}
+          orders={topBids}
         />
       </ScrollView>
     </SafeAreaView>

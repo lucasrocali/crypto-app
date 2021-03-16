@@ -7,3 +7,9 @@ export enum ConnectionStatus {
 }
 
 export type Dictionary = { [key: string]: number }
+
+export type Order = {
+  price: number
+  size: number
+  total: number
+}

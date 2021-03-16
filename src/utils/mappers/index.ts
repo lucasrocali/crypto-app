@@ -1,4 +1,4 @@
-import { Dictionary } from 'src/@types'
+import { Dictionary, Order } from 'src/@types'
 
 export function mapOrderListToObj(list: number[][]): Dictionary {
   return list.reduce((obj, delta: number[]) => {
@@ -22,4 +22,19 @@ export function mergeBookWithUpdatedValues(book: Dictionary, udpated_list: numbe
     }
     return obj
   }, {})
+}
+
+export function mapTopOrders(book: Dictionary, isAsc: boolean, top?: number): Order[] {
+  const bookPrices = Object.keys(book).map(bookKey => parseFloat(bookKey))
+  const sortedPrices = bookPrices.sort(function (a, b) {
+    if (isAsc) {
+      return b - a;
+    }
+    return a - b;
+  });
+  return sortedPrices.slice(0, top).map(price => ({
+    price,
+    size: book[price],
+    total: price * book[price]
+  }))
 }

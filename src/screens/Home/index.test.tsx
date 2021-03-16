@@ -50,6 +50,54 @@ describe('<HomeScreen />', () => {
       server.send(JSON.stringify(serverUpdate));
     })
 
+    expect(container.props.bids).toStrictEqual({
+      '56754': 170495,
+      '56756': 15000,
+      '56770': 500,
+      '56755.5': 22207,
+      '56754.5': 133235
+    })
+
+    await act(async () => {
+      const serverUpdate = {
+        feed: "book_ui_1",
+        bids: [
+          [56770.0, 800.0],
+        ],
+        asks: [],
+        product_id: "PI_XBTUSD"
+      }
+
+      server.send(JSON.stringify(serverUpdate));
+    })
+
+    expect(container.props.bids).toStrictEqual({
+      '56754': 170495,
+      '56756': 15000,
+      '56770': 800,
+      '56755.5': 22207,
+      '56754.5': 133235
+    })
+
+    await act(async () => {
+      const serverUpdate = {
+        feed: "book_ui_1",
+        bids: [
+          [56754.0, 0.0],
+        ],
+        asks: [],
+        product_id: "PI_XBTUSD"
+      }
+
+      server.send(JSON.stringify(serverUpdate));
+    })
+
+    expect(container.props.bids).toStrictEqual({
+      '56756': 15000,
+      '56770': 800,
+      '56755.5': 22207,
+      '56754.5': 133235
+    })
 
     await act(async () => {
       WS.clean();

@@ -5,3 +5,5 @@ export enum ConnectionStatus {
   CLOSED = 'CLOSED',
   UNINSTANTIATED = 'UNINSTANTIATED'
 }
+
+export type Dictionary = { [key: string]: number }

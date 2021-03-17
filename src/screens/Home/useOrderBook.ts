@@ -3,9 +3,10 @@ import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { ConnectionStatus, Dictionary, Order } from 'src/@types'
 import { mapOrderListToObj, mergeBookWithUpdatedValues, mapTopOrders } from 'src/utils/mappers'
 
-export default function useBook(socketUrl: string, topOrders: number): { connectionStatus: ConnectionStatus, topBids: Order[] } {
+export default function useBook(socketUrl: string, topOrders: number): { connectionStatus: ConnectionStatus, topBids: Order[], topAsks: Order[] } {
 
   const [bidsObj, setBidsObj] = useState<Dictionary>({})
+  const [asksObj, setAsksObj] = useState<Dictionary>({})
 
   const {
     sendJsonMessage,
@@ -35,18 +36,28 @@ export default function useBook(socketUrl: string, topOrders: number): { connect
         const bidsObj = mapOrderListToObj(lastJsonMessage.bids)
         setBidsObj(bidsObj)
       }
+      if (lastJsonMessage && lastJsonMessage.asks && lastJsonMessage.asks.length > 0) {
+        const asksObj = mapOrderListToObj(lastJsonMessage.asks)
+        setAsksObj(asksObj)
+      }
       return
     }
     if (lastJsonMessage && lastJsonMessage.bids && lastJsonMessage.bids.length > 0) {
       const updatedBidsObj = mergeBookWithUpdatedValues(bidsObj, lastJsonMessage.bids)
       setBidsObj(updatedBidsObj)
     }
+    if (lastJsonMessage && lastJsonMessage.asks && lastJsonMessage.asks.length > 0) {
+      const updatedAksObj = mergeBookWithUpdatedValues(asksObj, lastJsonMessage.asks)
+      setAsksObj(updatedAksObj)
+    }
   }, [lastJsonMessage])
 
   const topBids = mapTopOrders(bidsObj, true, topOrders)
+  const topAsks = mapTopOrders(asksObj, false, topOrders)
 
   return {
     connectionStatus,
-    topBids
+    topBids,
+    topAsks,
   }
 }

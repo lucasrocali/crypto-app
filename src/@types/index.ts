@@ -13,3 +13,8 @@ export type Order = {
   size: number
   total: number
 }
+
+export enum BookType {
+  ask = 'ask',
+  bid = 'bid'
+}

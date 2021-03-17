@@ -262,5 +262,31 @@ describe('<HomeScreen />', () => {
     expect(container.props.connectionStatus).toBe(ConnectionStatus.CLOSED)
   });
 
+  test('error', async () => {
+
+    const server = new WS(socketUrl)
+
+    const testRenderer = create(<HomeScreen socketUrl={socketUrl} topOrders={5} />)
+    const testInstance = testRenderer.root
+    const container = testInstance.findByType(HomeContainer)
+
+    expect(container.props.connectionStatus).toBe(ConnectionStatus.CONNECTING)
+
+    await act(async () => {
+      await server.connected;
+    })
+
+    expect(container.props.connectionStatus).toBe(ConnectionStatus.OPEN)
+
+    //error
+    await act(async () => {
+      server.error();
+    })
+
+    expect(container.props.connectionStatus).toBe(ConnectionStatus.CLOSED)
+    expect(container.props.errorMessage).toBe('Something went wrong')
+
+
+  })
 
 });

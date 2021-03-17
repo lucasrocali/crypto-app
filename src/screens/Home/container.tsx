@@ -8,29 +8,43 @@ type HomeContainerProps = {
   connectionStatus: ConnectionStatus
   topBids: Order[]
   topAsks: Order[]
+  errorMessage: string
 }
-export default function HomeContainer({ connectionStatus, topBids, topAsks }: HomeContainerProps) {
+export default function HomeContainer({ connectionStatus, topBids, topAsks, errorMessage }: HomeContainerProps) {
+
+  if (connectionStatus != ConnectionStatus.OPEN) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          <ActivityIndicator />
+        </View>
+      </SafeAreaView>
+    )
+  }
+  if (errorMessage) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content}>
+          <Text testID={'errorMessage'} style={styles.errorText}>{errorMessage}</Text>
+        </View>
+      </SafeAreaView>
+    )
+  }
   return (
     <SafeAreaView style={styles.container}>
-      {connectionStatus == ConnectionStatus.OPEN ? (
-        <ScrollView>
-          <Text style={styles.headerText}>PI_XBTUSD</Text>
-          <OrderBook
-            key={'bid'}
-            orders={topBids}
-            bookType={BookType.bid}
-          />
-          <OrderBook
-            key={'ask'}
-            orders={topAsks}
-            bookType={BookType.ask}
-          />
-        </ScrollView>
-      ) : (
-          <View style={styles.content}>
-            <ActivityIndicator />
-          </View>
-        )}
+      <ScrollView>
+        <Text style={styles.headerText}>PI_XBTUSD</Text>
+        <OrderBook
+          key={'bid'}
+          orders={topBids}
+          bookType={BookType.bid}
+        />
+        <OrderBook
+          key={'ask'}
+          orders={topAsks}
+          bookType={BookType.ask}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -46,8 +60,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   headerText: {
-    flex: 1,
     fontSize: textSize.h1,
+    color: colors.lblPrimary,
+    textAlign: 'center'
+  },
+  errorText: {
+    fontSize: textSize.body,
     color: colors.lblPrimary,
     textAlign: 'center'
   }

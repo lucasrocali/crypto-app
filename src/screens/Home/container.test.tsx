@@ -13,6 +13,7 @@ describe('<HomeContainer />', () => {
           connectionStatus={ConnectionStatus.CONNECTING}
           topBids={[]}
           topAsks={[]}
+          errorMessage={''}
         />
       )
       const testInstance = testRenderer.root
@@ -27,11 +28,29 @@ describe('<HomeContainer />', () => {
           connectionStatus={ConnectionStatus.OPEN}
           topBids={[]}
           topAsks={[]}
+          errorMessage={''}
         />
       )
       const testInstance = testRenderer.root
       const orderBook = testInstance.findAllByType(OrderBook)
       expect(orderBook).not.toBeNull()
+    });
+  });
+  describe('error', () => {
+    test('ErrorMessage should be showed', () => {
+      const testRenderer = create(
+        <HomeContainer
+          connectionStatus={ConnectionStatus.OPEN}
+          topBids={[]}
+          topAsks={[]}
+          errorMessage={'Some error'}
+        />
+      )
+      const testInstance = testRenderer.root
+      const errorMessageText = testInstance.findByProps({
+        testID: 'errorMessage',
+      })
+      expect(errorMessageText).not.toBeNull()
     });
   });
 })

@@ -3,10 +3,11 @@ import useWebSocket, { ReadyState } from 'react-use-websocket'
 import { ConnectionStatus, Dictionary, Order } from 'src/@types'
 import { mapOrderListToObj, mergeBookWithUpdatedValues, mapTopOrders } from 'src/utils/mappers'
 
-export default function useBook(socketUrl: string, topOrders: number): { connectionStatus: ConnectionStatus, topBids: Order[], topAsks: Order[] } {
+export default function useBook(socketUrl: string, topOrders: number): { connectionStatus: ConnectionStatus, topBids: Order[], topAsks: Order[], errorMessage: string } {
 
   const [bidsObj, setBidsObj] = useState<Dictionary>({})
   const [asksObj, setAsksObj] = useState<Dictionary>({})
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const {
     sendJsonMessage,
@@ -20,6 +21,9 @@ export default function useBook(socketUrl: string, topOrders: number): { connect
         product_ids: ["PI_XBTUSD"]
       })
     },
+    onError: () => {
+      setErrorMessage('Something went wrong')
+    }
   });
 
   const connectionStatus: ConnectionStatus = {
@@ -59,5 +63,6 @@ export default function useBook(socketUrl: string, topOrders: number): { connect
     connectionStatus,
     topBids,
     topAsks,
+    errorMessage,
   }
 }

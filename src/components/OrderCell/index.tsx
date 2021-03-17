@@ -11,9 +11,9 @@ type OrderBookProps = {
 function OrderBook({ order, bookType }: OrderBookProps) {
   return (
     <View style={styles.container}>
-      <Text style={bookType === BookType.ask ? styles.askText : styles.bidText}>{order.price}</Text>
-      <Text style={styles.text}>{order.size}</Text>
-      <Text style={styles.text}>{order.total}</Text>
+      <Text style={bookType === BookType.ask ? styles.askText : styles.bidText}>{order.price.toFixed(2).toLocaleString()}</Text>
+      <Text style={styles.text}>{order.size.toLocaleString()}</Text>
+      <Text style={styles.text}>{order.total.toLocaleString()}</Text>
     </View>
   );
 };

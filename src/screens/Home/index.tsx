@@ -7,7 +7,7 @@ type HomeScreenProps = {
   topOrders?: number
 }
 
-export default function HomeScreen({ socketUrl = 'wss://wwww.cryptofacilities.com/ws/v1', topOrders = 10 }: HomeScreenProps) {
+export default function HomeScreen({ socketUrl = 'wss://www.cryptofacilities.com/ws/v1', topOrders = 10 }: HomeScreenProps) {
 
   const { connectionStatus, topBids, topAsks } = useOrderBook(socketUrl, topOrders)
 

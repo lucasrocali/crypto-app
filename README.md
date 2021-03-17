@@ -1,5 +1,6 @@
 # Crypto App
 
+![Demo](demo.gif)
 ## Getting Started
 
 ### Cloning
